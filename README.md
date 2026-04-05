@@ -22,7 +22,3 @@ Friskes' version has better unit frame portraits (stance tracking, circle cooldo
 - **[Friskes](https://github.com/Friskes/BigDebuffs)** — Unit frame improvements
 - **[Tsoukie](https://gitlab.com/Tsoukie/bigdebuffs-3.3.5)** — Raid frames system
 - **Apparent** — Spell list
-
-## License
-
-MIT
