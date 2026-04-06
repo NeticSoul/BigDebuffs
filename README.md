@@ -4,7 +4,7 @@ Displays large CC and debuff/buff icons on unit frame portraits and raid frames.
 
 Based on **[Friskes/BigDebuffs](https://github.com/Friskes/BigDebuffs)** with the raid frames system from **[Tsoukie/bigdebuffs-3.3.5](https://gitlab.com/Tsoukie/bigdebuffs-3.3.5)** merged in.
 
-Friskes' version has better unit frame portraits (stance tracking, circle cooldown, interrupt borders, centering fixes). Tsoukie's version has raid frame debuff support with CompactRaidFrame compatibility. This build combines both into a single addon.
+Friskes' version focuses on unit frame portrait features (stance tracking, circle cooldown, interrupt borders, centering fixes), while Tsoukie's version provides raid frame debuff support with CompactRaidFrame compatibility. This build combines both into a single addon.
 
 ## Installation
 

@@ -2274,8 +2274,8 @@ function BigDebuffs:UNIT_AURA(event, unit)
 				-- фикс кривых рук близзов
 				if BigDebuffsplayerUnitFrame.blizzard then
 					BigDebuffsplayerUnitFrame:ClearAllPoints()
-					BigDebuffsplayerUnitFrame:SetPoint("CENTER", PlayerPortrait, "CENTER", 0.5, -0.7)
-					BigDebuffsplayerUnitFrame:SetSize(PlayerPortrait:GetHeight(), PlayerPortrait:GetWidth() )
+					BigDebuffsplayerUnitFrame:SetPoint("CENTER", PlayerPortrait, "CENTER", 0.4, 1)
+					BigDebuffsplayerUnitFrame:SetSize(PlayerPortrait:GetHeight() + 2.8, PlayerPortrait:GetWidth() + 2.8)
 				end
 				if BigDebuffsplayerFAKEUnitFrame.blizzard then
 					BigDebuffsplayerFAKEUnitFrame:ClearAllPoints()
@@ -2289,23 +2289,23 @@ function BigDebuffs:UNIT_AURA(event, unit)
 				end
 				if BigDebuffstargetUnitFrame.blizzard then
 					BigDebuffstargetUnitFrame:ClearAllPoints()
-					BigDebuffstargetUnitFrame:SetPoint("CENTER", TargetFramePortrait, "CENTER", -0.4, -0.7)
-					BigDebuffstargetUnitFrame:SetSize(TargetFramePortrait:GetHeight(), TargetFramePortrait:GetWidth() )
+					BigDebuffstargetUnitFrame:SetPoint("CENTER", TargetFramePortrait, "CENTER", -0.4, 1)
+					BigDebuffstargetUnitFrame:SetSize(TargetFramePortrait:GetHeight() + 2.8, TargetFramePortrait:GetWidth() + 2.8)
 				end
 				if BigDebuffstargettargetUnitFrame.blizzard then
 					BigDebuffstargettargetUnitFrame:ClearAllPoints()
-					BigDebuffstargettargetUnitFrame:SetPoint("CENTER", TargetFrameToTPortrait, "CENTER", -0.1, -0.5)
-					BigDebuffstargettargetUnitFrame:SetSize(TargetFrameToTPortrait:GetHeight() + 4.2, TargetFrameToTPortrait:GetWidth() + 4.2)
+					BigDebuffstargettargetUnitFrame:SetPoint("CENTER", TargetFrameToTPortrait, "CENTER", -0.4, -0.5)
+					BigDebuffstargettargetUnitFrame:SetSize(TargetFrameToTPortrait:GetHeight() + 2.8, TargetFrameToTPortrait:GetWidth() + 2.8)
 				end
 				if BigDebuffsfocusUnitFrame.blizzard then
 					BigDebuffsfocusUnitFrame:ClearAllPoints()
-					BigDebuffsfocusUnitFrame:SetPoint("CENTER", FocusFramePortrait, "CENTER", -0.4, -0.7)
-					BigDebuffsfocusUnitFrame:SetSize(FocusFramePortrait:GetHeight(), FocusFramePortrait:GetWidth() )
+					BigDebuffsfocusUnitFrame:SetPoint("CENTER", FocusFramePortrait, "CENTER", -0.4, 1)
+					BigDebuffsfocusUnitFrame:SetSize(FocusFramePortrait:GetHeight() + 2.8, FocusFramePortrait:GetWidth() + 2.8)
 				end
 				if BigDebuffsfocustargetUnitFrame.blizzard then
 					BigDebuffsfocustargetUnitFrame:ClearAllPoints()
-					BigDebuffsfocustargetUnitFrame:SetPoint("CENTER", FocusFrameToTPortrait, "CENTER", -0.1, -0.5)
-					BigDebuffsfocustargetUnitFrame:SetSize(FocusFrameToTPortrait:GetHeight() + 4.2, FocusFrameToTPortrait:GetWidth() + 4.2)
+					BigDebuffsfocustargetUnitFrame:SetPoint("CENTER", FocusFrameToTPortrait, "CENTER", -0.4, -0.5)
+					BigDebuffsfocustargetUnitFrame:SetSize(FocusFrameToTPortrait:GetHeight() + 2.8, FocusFrameToTPortrait:GetWidth() + 2.8)
 				end
 				if BigDebuffsparty1UnitFrame.blizzard then
 					BigDebuffsparty1UnitFrame:ClearAllPoints()

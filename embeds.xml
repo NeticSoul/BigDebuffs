@@ -13,5 +13,4 @@
 	<Include file="libs\AceTimer-3.0\AceTimer-3.0.xml"/>
 	<Include file="libs\AceLocale-3.0\AceLocale-3.0.xml" />
 	<Include file="libs\LibDualSpec-1.0\LibDualSpec-1.0.lua"/>
-	<Include file="libs\LibBetterBlizzOptions-1.0\LibBetterBlizzOptions-1.0.lua"/>
 </Ui>
