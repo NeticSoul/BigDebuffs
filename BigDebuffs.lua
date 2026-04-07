@@ -1586,8 +1586,32 @@ function BigDebuffs:AttachUnitFrame(unit)
 			frame.cooldownContainer:SetFrameLevel(parentLevel)
 			if self.useDragonUIOffsets then
 				frame.icon:SetDrawLayer("OVERLAY")
+				if frame.CircleCooldown and frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.texture and frame.CircleCooldown.Cooldown.texture.SetDrawLayer then
+					frame.CircleCooldown.Cooldown.texture:SetDrawLayer("OVERLAY")
+				end
+				if frame.CircleCooldown and frame.CircleCooldown.Edge and frame.CircleCooldown.Edge.texture and frame.CircleCooldown.Edge.texture.SetDrawLayer then
+					frame.CircleCooldown.Edge.texture:SetDrawLayer("OVERLAY")
+				end
+				if frame.CircleCooldown and frame.CircleCooldown.Bling and frame.CircleCooldown.Bling.texture and frame.CircleCooldown.Bling.texture.SetDrawLayer then
+					frame.CircleCooldown.Bling.texture:SetDrawLayer("OVERLAY")
+				end
+				if frame.CircleCooldown and frame.CircleCooldown.TimerText and frame.CircleCooldown.TimerText.text and frame.CircleCooldown.TimerText.text.SetDrawLayer then
+					frame.CircleCooldown.TimerText.text:SetDrawLayer("OVERLAY")
+				end
 			else
 				frame.icon:SetDrawLayer("BORDER")
+				if frame.CircleCooldown and frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.texture and frame.CircleCooldown.Cooldown.texture.SetDrawLayer then
+					frame.CircleCooldown.Cooldown.texture:SetDrawLayer("ARTWORK")
+				end
+				if frame.CircleCooldown and frame.CircleCooldown.Edge and frame.CircleCooldown.Edge.texture and frame.CircleCooldown.Edge.texture.SetDrawLayer then
+					frame.CircleCooldown.Edge.texture:SetDrawLayer("ARTWORK")
+				end
+				if frame.CircleCooldown and frame.CircleCooldown.Bling and frame.CircleCooldown.Bling.texture and frame.CircleCooldown.Bling.texture.SetDrawLayer then
+					frame.CircleCooldown.Bling.texture:SetDrawLayer("ARTWORK")
+				end
+				if frame.CircleCooldown and frame.CircleCooldown.TimerText and frame.CircleCooldown.TimerText.text and frame.CircleCooldown.TimerText.text.SetDrawLayer then
+					frame.CircleCooldown.TimerText.text:SetDrawLayer("ARTWORK")
+				end
 			end
 
 			frame.cooldownContainer:SetSize(frame.anchor:GetWidth(), frame.anchor:GetHeight() )
