@@ -1579,10 +1579,17 @@ function BigDebuffs:AttachUnitFrame(unit)
 				PetHitIndicator.Show = function() end
 			end
 
-			frame:SetParent(frame.anchor:GetParent() )
-			frame:SetFrameLevel(frame.anchor:GetParent():GetFrameLevel() )
+			local parentFrame = frame.anchor:GetParent()
+			frame:SetParent(parentFrame)
+			local parentLevel = (parentFrame and parentFrame.GetFrameLevel and parentFrame:GetFrameLevel()) or 0
+			frame:SetFrameLevel(parentLevel)
+			frame.cooldownContainer:SetFrameLevel(parentLevel)
+			if self.useDragonUIOffsets then
+				frame.icon:SetDrawLayer("OVERLAY")
+			else
+				frame.icon:SetDrawLayer("BORDER")
+			end
 
-			frame.cooldownContainer:SetFrameLevel(frame.anchor:GetParent():GetFrameLevel() )
 			frame.cooldownContainer:SetSize(frame.anchor:GetWidth(), frame.anchor:GetHeight() )
 
 			frame.anchor:SetDrawLayer("BACKGROUND")
@@ -1715,6 +1722,23 @@ function BigDebuffs:OnEnable()
 	self:RegisterEvent("UNIT_AURA")
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self:RegisterEvent("UNIT_SPELLCAST_FAILED")
+
+	-- Use DragonUI portrait offsets only when DragonUI is explicitly loaded and enabled.
+	local dragonLoaded = IsAddOnLoaded and IsAddOnLoaded("DragonUI")
+	dragonLoaded = (dragonLoaded == true or dragonLoaded == 1)
+
+	local dragonEnabled = true
+	if GetAddOnEnableState and UnitName then
+		local playerName = UnitName("player")
+		if playerName then
+			local state = GetAddOnEnableState(playerName, "DragonUI")
+			dragonEnabled = type(state) == "number" and state > 0
+		else
+			dragonEnabled = false
+		end
+	end
+
+	self.useDragonUIOffsets = dragonEnabled and dragonLoaded
 
 	self.interrupts = {}
 
@@ -2269,13 +2293,19 @@ function BigDebuffs:UNIT_AURA(event, unit)
 		--if frame.current ~= icon then
 
 			if frame.blizzard then
+				local useDragonUIOffsets = self.useDragonUIOffsets
 				-- Blizzard Frame
 
 				-- фикс кривых рук близзов
 				if BigDebuffsplayerUnitFrame.blizzard then
 					BigDebuffsplayerUnitFrame:ClearAllPoints()
-					BigDebuffsplayerUnitFrame:SetPoint("CENTER", PlayerPortrait, "CENTER", 0.4, 1)
-					BigDebuffsplayerUnitFrame:SetSize(PlayerPortrait:GetHeight() + 2.8, PlayerPortrait:GetWidth() + 2.8)
+					if useDragonUIOffsets then
+						BigDebuffsplayerUnitFrame:SetPoint("CENTER", PlayerPortrait, "CENTER", 0.4, 1)
+						BigDebuffsplayerUnitFrame:SetSize(PlayerPortrait:GetHeight() + 2.8, PlayerPortrait:GetWidth() + 2.8)
+					else
+						BigDebuffsplayerUnitFrame:SetPoint("CENTER", PlayerPortrait, "CENTER", 0.5, -0.7)
+						BigDebuffsplayerUnitFrame:SetSize(PlayerPortrait:GetHeight(), PlayerPortrait:GetWidth() )
+					end
 				end
 				if BigDebuffsplayerFAKEUnitFrame.blizzard then
 					BigDebuffsplayerFAKEUnitFrame:ClearAllPoints()
@@ -2289,23 +2319,43 @@ function BigDebuffs:UNIT_AURA(event, unit)
 				end
 				if BigDebuffstargetUnitFrame.blizzard then
 					BigDebuffstargetUnitFrame:ClearAllPoints()
-					BigDebuffstargetUnitFrame:SetPoint("CENTER", TargetFramePortrait, "CENTER", -0.4, 1)
-					BigDebuffstargetUnitFrame:SetSize(TargetFramePortrait:GetHeight() + 2.8, TargetFramePortrait:GetWidth() + 2.8)
+					if useDragonUIOffsets then
+						BigDebuffstargetUnitFrame:SetPoint("CENTER", TargetFramePortrait, "CENTER", -0.4, 1)
+						BigDebuffstargetUnitFrame:SetSize(TargetFramePortrait:GetHeight() + 2.8, TargetFramePortrait:GetWidth() + 2.8)
+					else
+						BigDebuffstargetUnitFrame:SetPoint("CENTER", TargetFramePortrait, "CENTER", -0.4, -0.7)
+						BigDebuffstargetUnitFrame:SetSize(TargetFramePortrait:GetHeight(), TargetFramePortrait:GetWidth() )
+					end
 				end
 				if BigDebuffstargettargetUnitFrame.blizzard then
 					BigDebuffstargettargetUnitFrame:ClearAllPoints()
-					BigDebuffstargettargetUnitFrame:SetPoint("CENTER", TargetFrameToTPortrait, "CENTER", -0.4, -0.5)
-					BigDebuffstargettargetUnitFrame:SetSize(TargetFrameToTPortrait:GetHeight() + 2.8, TargetFrameToTPortrait:GetWidth() + 2.8)
+					if useDragonUIOffsets then
+						BigDebuffstargettargetUnitFrame:SetPoint("CENTER", TargetFrameToTPortrait, "CENTER", -0.4, -0.5)
+						BigDebuffstargettargetUnitFrame:SetSize(TargetFrameToTPortrait:GetHeight() + 2.8, TargetFrameToTPortrait:GetWidth() + 2.8)
+					else
+						BigDebuffstargettargetUnitFrame:SetPoint("CENTER", TargetFrameToTPortrait, "CENTER", -0.1, -0.5)
+						BigDebuffstargettargetUnitFrame:SetSize(TargetFrameToTPortrait:GetHeight() + 4.2, TargetFrameToTPortrait:GetWidth() + 4.2)
+					end
 				end
 				if BigDebuffsfocusUnitFrame.blizzard then
 					BigDebuffsfocusUnitFrame:ClearAllPoints()
-					BigDebuffsfocusUnitFrame:SetPoint("CENTER", FocusFramePortrait, "CENTER", -0.4, 1)
-					BigDebuffsfocusUnitFrame:SetSize(FocusFramePortrait:GetHeight() + 2.8, FocusFramePortrait:GetWidth() + 2.8)
+					if useDragonUIOffsets then
+						BigDebuffsfocusUnitFrame:SetPoint("CENTER", FocusFramePortrait, "CENTER", -0.4, 1)
+						BigDebuffsfocusUnitFrame:SetSize(FocusFramePortrait:GetHeight() + 2.8, FocusFramePortrait:GetWidth() + 2.8)
+					else
+						BigDebuffsfocusUnitFrame:SetPoint("CENTER", FocusFramePortrait, "CENTER", -0.4, -0.7)
+						BigDebuffsfocusUnitFrame:SetSize(FocusFramePortrait:GetHeight(), FocusFramePortrait:GetWidth() )
+					end
 				end
 				if BigDebuffsfocustargetUnitFrame.blizzard then
 					BigDebuffsfocustargetUnitFrame:ClearAllPoints()
-					BigDebuffsfocustargetUnitFrame:SetPoint("CENTER", FocusFrameToTPortrait, "CENTER", -0.4, -0.5)
-					BigDebuffsfocustargetUnitFrame:SetSize(FocusFrameToTPortrait:GetHeight() + 2.8, FocusFrameToTPortrait:GetWidth() + 2.8)
+					if useDragonUIOffsets then
+						BigDebuffsfocustargetUnitFrame:SetPoint("CENTER", FocusFrameToTPortrait, "CENTER", -0.4, -0.5)
+						BigDebuffsfocustargetUnitFrame:SetSize(FocusFrameToTPortrait:GetHeight() + 2.8, FocusFrameToTPortrait:GetWidth() + 2.8)
+					else
+						BigDebuffsfocustargetUnitFrame:SetPoint("CENTER", FocusFrameToTPortrait, "CENTER", -0.1, -0.5)
+						BigDebuffsfocustargetUnitFrame:SetSize(FocusFrameToTPortrait:GetHeight() + 4.2, FocusFrameToTPortrait:GetWidth() + 4.2)
+					end
 				end
 				if BigDebuffsparty1UnitFrame.blizzard then
 					BigDebuffsparty1UnitFrame:ClearAllPoints()
