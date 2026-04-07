@@ -2524,6 +2524,22 @@ function BigDebuffs:UNIT_AURA(event, unit)
 		if duration > 0.2 then
 
 			if self.db.profile.unitFrames.circleCooldown and frame.blizzard then
+				if self.useDragonUIOffsets and frame.CircleCooldown and frame.cooldownContainer then
+					local circleBaseLevel = frame.cooldownContainer:GetFrameLevel() + 1
+					frame.CircleCooldown:SetFrameLevel(circleBaseLevel)
+					if frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.SetFrameLevel then
+						frame.CircleCooldown.Cooldown:SetFrameLevel(circleBaseLevel)
+					end
+					if frame.CircleCooldown.Edge and frame.CircleCooldown.Edge.SetFrameLevel then
+						frame.CircleCooldown.Edge:SetFrameLevel(circleBaseLevel)
+					end
+					if frame.CircleCooldown.Bling and frame.CircleCooldown.Bling.SetFrameLevel then
+						frame.CircleCooldown.Bling:SetFrameLevel(circleBaseLevel)
+					end
+					if frame.CircleCooldown.TimerText and frame.CircleCooldown.TimerText.SetFrameLevel then
+						frame.CircleCooldown.TimerText:SetFrameLevel(circleBaseLevel)
+					end
+				end
 				frame.CircleCooldown:SetCooldown(expires - duration, duration)
 				frame.cooldown:Hide()
 			else
