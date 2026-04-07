@@ -1436,6 +1436,11 @@ function BigDebuffs:AttachUnitFrame(unit)
 
 		frame.timer = frame:CreateFontString(nil, "OVERLAY")
 		frame.timer:SetPoint("CENTER")
+
+		-- Container frame for the timer text, used in DragonUI to ensure it renders above the swipe
+		frame.timerContainer = CreateFrame("Frame", nil, frame)
+		frame.timerContainer:SetAllPoints()
+
 		frame:SetScript("OnUpdate", self.OnUpdate)
 
 		frame:RegisterForDrag("LeftButton")
@@ -1615,6 +1620,11 @@ function BigDebuffs:AttachUnitFrame(unit)
 				end
 				-- Also sync vanilla cooldown frame level for when Circle Cooldown Texture is disabled
 				frame.cooldown:SetFrameLevel(containerLevel)
+				-- Put timer text above the swipe by reparenting to a frame at containerLevel + 1
+				if frame.timerContainer then
+					frame.timerContainer:SetFrameLevel(containerLevel + 1)
+					frame.timer:SetParent(frame.timerContainer)
+				end
 			else
 				frame.icon:SetDrawLayer("BORDER")
 				if frame.CircleCooldown and frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.texture and frame.CircleCooldown.Cooldown.texture.SetDrawLayer then
@@ -1628,6 +1638,10 @@ function BigDebuffs:AttachUnitFrame(unit)
 				end
 				if frame.CircleCooldown and frame.CircleCooldown.TimerText and frame.CircleCooldown.TimerText.text and frame.CircleCooldown.TimerText.text.SetDrawLayer then
 					frame.CircleCooldown.TimerText.text:SetDrawLayer("ARTWORK")
+				end
+				-- Restore timer to its original parent when not in DragonUI mode
+				if frame.timerContainer then
+					frame.timer:SetParent(frame)
 				end
 			end
 
