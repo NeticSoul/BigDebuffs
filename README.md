@@ -6,6 +6,8 @@ Based on **[Friskes/BigDebuffs](https://github.com/Friskes/BigDebuffs)** with th
 
 Friskes' version focuses on unit frame portrait features (stance tracking, circle cooldown, interrupt borders, centering fixes), while Tsoukie's version provides raid frame debuff support with CompactRaidFrame compatibility. This build combines both into a single addon.
 
+- Compatible with [DragonUI](https://github.com/NeticSoul/DragonUI).
+
 ## Installation
 
 1. Download or clone this repository
