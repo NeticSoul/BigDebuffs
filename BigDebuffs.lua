@@ -1585,7 +1585,7 @@ function BigDebuffs:AttachUnitFrame(unit)
 			frame:SetFrameLevel(parentLevel)
 			frame.cooldownContainer:SetFrameLevel(parentLevel)
 			if self.useDragonUIOffsets then
-				frame.icon:SetDrawLayer("BORDER")
+				frame.icon:SetDrawLayer("OVERLAY")
 				if frame.CircleCooldown and frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.texture and frame.CircleCooldown.Cooldown.texture.SetDrawLayer then
 					frame.CircleCooldown.Cooldown.texture:SetDrawLayer("ARTWORK")
 				end
@@ -1598,8 +1598,8 @@ function BigDebuffs:AttachUnitFrame(unit)
 				if frame.CircleCooldown and frame.CircleCooldown.TimerText and frame.CircleCooldown.TimerText.text and frame.CircleCooldown.TimerText.text.SetDrawLayer then
 					frame.CircleCooldown.TimerText.text:SetDrawLayer("ARTWORK")
 				end
-				-- Sync CircleCooldown sub-frame levels to cooldownContainer (overrides SetFrameVisible hardcoded level 2)
-				local containerLevel = frame.cooldownContainer:GetFrameLevel()
+				-- Sync CircleCooldown sub-frame levels to cooldownContainer+1 (above icon, overrides SetFrameVisible hardcoded level 2)
+				local containerLevel = frame.cooldownContainer:GetFrameLevel() + 1
 				frame.CircleCooldown:SetFrameLevel(containerLevel)
 				if frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.SetFrameLevel then
 					frame.CircleCooldown.Cooldown:SetFrameLevel(containerLevel)
@@ -1613,6 +1613,8 @@ function BigDebuffs:AttachUnitFrame(unit)
 				if frame.CircleCooldown.TimerText and frame.CircleCooldown.TimerText.SetFrameLevel then
 					frame.CircleCooldown.TimerText:SetFrameLevel(containerLevel)
 				end
+				-- Also sync vanilla cooldown frame level for when Circle Cooldown Texture is disabled
+				frame.cooldown:SetFrameLevel(containerLevel)
 			else
 				frame.icon:SetDrawLayer("BORDER")
 				if frame.CircleCooldown and frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.texture and frame.CircleCooldown.Cooldown.texture.SetDrawLayer then
@@ -1818,6 +1820,11 @@ function BigDebuffs:PLAYER_ENTERING_WORLD()
 		self.stances = {}
 	end
 	CreateStancesTable = false
+
+	-- Refresh auras for all units after reload so existing debuffs are shown
+	for i = 1, #units do
+		self:UNIT_AURA(nil, units[i])
+	end
 end
 
 -- For unit frames
@@ -2498,7 +2505,7 @@ function BigDebuffs:UNIT_AURA(event, unit)
 			end
 
             -- Проверяем, является ли активная аура прерыванием, чтобы показать рамку
-            if auraType == "interrupts" then
+            if auraType == "interrupts" or auraType == "silence" then
                 if frame.interruptBorder then
                     local color = self.db.profile.unitFrames.interruptBorderColor or DEFAULT_INTERRUPT_BORDER_COLOR
                     -- Если альфа-канал > 0, показываем рамку
@@ -2540,7 +2547,7 @@ function BigDebuffs:UNIT_AURA(event, unit)
 
 			if self.db.profile.unitFrames.circleCooldown and frame.blizzard then
 				if self.useDragonUIOffsets and frame.CircleCooldown and frame.cooldownContainer then
-					local circleBaseLevel = frame.cooldownContainer:GetFrameLevel()
+					local circleBaseLevel = frame.cooldownContainer:GetFrameLevel() + 1
 					frame.CircleCooldown:SetFrameLevel(circleBaseLevel)
 					if frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.SetFrameLevel then
 						frame.CircleCooldown.Cooldown:SetFrameLevel(circleBaseLevel)
@@ -2558,6 +2565,9 @@ function BigDebuffs:UNIT_AURA(event, unit)
 				frame.CircleCooldown:SetCooldown(expires - duration, duration)
 				frame.cooldown:Hide()
 			else
+				if self.useDragonUIOffsets and frame.cooldown and frame.cooldownContainer then
+					frame.cooldown:SetFrameLevel(frame.cooldownContainer:GetFrameLevel() + 1)
+				end
 				frame.cooldown:SetCooldown(expires - duration, duration)
 				frame.CircleCooldown:Hide()
 			end
