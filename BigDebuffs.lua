@@ -1585,18 +1585,33 @@ function BigDebuffs:AttachUnitFrame(unit)
 			frame:SetFrameLevel(parentLevel)
 			frame.cooldownContainer:SetFrameLevel(parentLevel)
 			if self.useDragonUIOffsets then
-				frame.icon:SetDrawLayer("OVERLAY")
+				frame.icon:SetDrawLayer("BORDER")
 				if frame.CircleCooldown and frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.texture and frame.CircleCooldown.Cooldown.texture.SetDrawLayer then
-					frame.CircleCooldown.Cooldown.texture:SetDrawLayer("OVERLAY")
+					frame.CircleCooldown.Cooldown.texture:SetDrawLayer("ARTWORK")
 				end
 				if frame.CircleCooldown and frame.CircleCooldown.Edge and frame.CircleCooldown.Edge.texture and frame.CircleCooldown.Edge.texture.SetDrawLayer then
-					frame.CircleCooldown.Edge.texture:SetDrawLayer("OVERLAY")
+					frame.CircleCooldown.Edge.texture:SetDrawLayer("ARTWORK")
 				end
 				if frame.CircleCooldown and frame.CircleCooldown.Bling and frame.CircleCooldown.Bling.texture and frame.CircleCooldown.Bling.texture.SetDrawLayer then
-					frame.CircleCooldown.Bling.texture:SetDrawLayer("OVERLAY")
+					frame.CircleCooldown.Bling.texture:SetDrawLayer("ARTWORK")
 				end
 				if frame.CircleCooldown and frame.CircleCooldown.TimerText and frame.CircleCooldown.TimerText.text and frame.CircleCooldown.TimerText.text.SetDrawLayer then
-					frame.CircleCooldown.TimerText.text:SetDrawLayer("OVERLAY")
+					frame.CircleCooldown.TimerText.text:SetDrawLayer("ARTWORK")
+				end
+				-- Sync CircleCooldown sub-frame levels to cooldownContainer (overrides SetFrameVisible hardcoded level 2)
+				local containerLevel = frame.cooldownContainer:GetFrameLevel()
+				frame.CircleCooldown:SetFrameLevel(containerLevel)
+				if frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.SetFrameLevel then
+					frame.CircleCooldown.Cooldown:SetFrameLevel(containerLevel)
+				end
+				if frame.CircleCooldown.Edge and frame.CircleCooldown.Edge.SetFrameLevel then
+					frame.CircleCooldown.Edge:SetFrameLevel(containerLevel)
+				end
+				if frame.CircleCooldown.Bling and frame.CircleCooldown.Bling.SetFrameLevel then
+					frame.CircleCooldown.Bling:SetFrameLevel(containerLevel)
+				end
+				if frame.CircleCooldown.TimerText and frame.CircleCooldown.TimerText.SetFrameLevel then
+					frame.CircleCooldown.TimerText:SetFrameLevel(containerLevel)
 				end
 			else
 				frame.icon:SetDrawLayer("BORDER")
@@ -2525,7 +2540,7 @@ function BigDebuffs:UNIT_AURA(event, unit)
 
 			if self.db.profile.unitFrames.circleCooldown and frame.blizzard then
 				if self.useDragonUIOffsets and frame.CircleCooldown and frame.cooldownContainer then
-					local circleBaseLevel = frame.cooldownContainer:GetFrameLevel() + 1
+					local circleBaseLevel = frame.cooldownContainer:GetFrameLevel()
 					frame.CircleCooldown:SetFrameLevel(circleBaseLevel)
 					if frame.CircleCooldown.Cooldown and frame.CircleCooldown.Cooldown.SetFrameLevel then
 						frame.CircleCooldown.Cooldown:SetFrameLevel(circleBaseLevel)
