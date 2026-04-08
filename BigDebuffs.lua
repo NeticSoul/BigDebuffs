@@ -2232,6 +2232,7 @@ function BigDebuffs:UNIT_AURA(event, unit)
 
 	local now = GetTime()
 	local left, priority, duration, expires, icon, isAura, interrupt, auraType, spellId = 0, 0
+	local hasActiveInterrupt = false
 
 	for i = 1, 40 do
 		-- Check debuffs
@@ -2315,6 +2316,9 @@ function BigDebuffs:UNIT_AURA(event, unit)
 	local n, id, ico, d, e = self:GetInterruptFor(unit)
 	if n then
 		local p = self:GetAuraPriority(n, id, unit)
+		if p then
+			hasActiveInterrupt = true
+		end
 		if p and p > priority or p == priority and e - now > left then
 			left = e - now
 			duration = d
@@ -2518,8 +2522,8 @@ function BigDebuffs:UNIT_AURA(event, unit)
 				frame.icon:SetTexture(icon)
 			end
 
-            -- Проверяем, является ли активная аура прерыванием, чтобы показать рамку
-            if auraType == "interrupts" or auraType == "silence" then
+			-- Show interrupt border only when an actual interrupt lockout is active.
+			if hasActiveInterrupt then
                 if frame.interruptBorder then
                     local color = self.db.profile.unitFrames.interruptBorderColor or DEFAULT_INTERRUPT_BORDER_COLOR
                     -- Если альфа-канал > 0, показываем рамку
